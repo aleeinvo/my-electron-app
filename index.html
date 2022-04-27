@@ -2,12 +2,13 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'">
-    <meta http-equiv="X-Content-Security-Policy" content="default-src 'self'; script-src 'self'">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'">
+    <meta http-equiv="X-Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'">
+    <script src="./js/vue.js"></script>
     <title>My Electron App</title>
 </head>
 <body>
-    <div>
+    <div id="app">
         <h1>My Electron App</h1>
         <p>
             Node Version: <span id="node-version"></span>
@@ -18,6 +19,20 @@
         <p>
             Electron Version: <span id="electron-version"></span>
         </p>
+
+        <p>
+            Author: {{ author }}
+        </p>
     </div>
+
+    <script>
+        Vue.createApp({
+            data() {
+                return {
+                    author: 'Alee Dhillon'
+                }
+            }
+        }).mount('#app');
+    </script>
 </body>
 </html>
