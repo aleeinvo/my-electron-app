@@ -23,16 +23,15 @@
         <p>
             Author: {{ author }}
         </p>
+        <p>
+            pageTitle: {{ pageTitle }}
+        </p>
+
+        <div>
+            <input type="text" @input="updateTitle">
+        </div>
     </div>
 
-    <script>
-        Vue.createApp({
-            data() {
-                return {
-                    author: 'Alee Dhillon'
-                }
-            }
-        }).mount('#app');
-    </script>
+    <script src="renderer.js"></script>
 </body>
 </html>
