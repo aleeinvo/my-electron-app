@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain } = require('electron');
+const { app, BrowserWindow, Menu, ipcMain, dialog } = require('electron');
 const path = require('path');
 
 function handleSetTitle(event, title) {
@@ -11,6 +11,16 @@ function handleSetTitle(event, title) {
         .setTitle(title);
 }
 
+async function handleFileOpen() {
+    const { canceled, filePaths } = await dialog.showOpenDialog();
+
+    if (canceled) {
+        return;
+    } else {
+        return filePaths[0];
+    }
+}
+
 const createWindow = () => {
     const win = new BrowserWindow({
         width: 800,
@@ -20,14 +30,32 @@ const createWindow = () => {
         }
     });
 
+    // const menu = Menu.buildFromTemplate({
+    //     label: app.name,
+    //     submenu: [
+    //         {
+    //             click: () => win.webContents.send('plus-counter'),
+    //             label: 'Increment +'
+    //         },
+    //         {
+    //             click: () => win.webContents.send('minus-counter'),
+    //             label: 'Decrement -'
+    //         }
+    //     ]
+    // });
+
+    // Menu.setApplicationMenu(menu);
+
     win.loadFile('index.html');
 }
 
 app.whenReady().then(() => {
+    ipcMain.handle('dialog:openFile', handleFileOpen);
+
     createWindow();
 
     app.on('activate', () => {
-        if(BrowserWindow.getAllWindows.length === 0) {
+        if (BrowserWindow.getAllWindows.length === 0) {
             createWindow();
         }
     });
@@ -36,7 +64,7 @@ app.whenReady().then(() => {
 })
 
 app.on('window-all-closed', () => {
-    if(process.platform !== 'darwin') {
+    if (process.platform !== 'darwin') {
         app.quit();
     }
 })
