@@ -3,7 +3,8 @@ Vue.createApp({
         return {
             author: 'Alee Dhillon',
             pageTitle: 'My Electron App',
-            filePath: ''
+            filePath: '',
+            counter: 0
         }
     },
     methods: {
@@ -13,5 +14,14 @@ Vue.createApp({
         async selectFile() {
             this.filePath = await window.electronAPI.openFile();
         }
+    },
+    created() {
+        window.electronAPI.onPlusCounter(_event => {
+            _event.sender.send('counter-value', ++this.counter);
+        });
+
+        window.electronAPI.onMinusCounter(_event => {
+            _event.sender.send('counter-value', --this.counter);
+        })
     }
 }).mount('#app');

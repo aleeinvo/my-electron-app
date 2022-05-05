@@ -16,5 +16,7 @@ window.addEventListener('DOMContentLoaded', () => {
 contextBridge.exposeInMainWorld('electronAPI', {
     city: 'Lahore',
     setTitle: (title) => ipcRenderer.send('set-title', title),
-    openFile: () => ipcRenderer.invoke('dialog:openFile')
+    openFile: () => ipcRenderer.invoke('dialog:openFile'),
+    onPlusCounter: (callback) => ipcRenderer.on('plus-counter', callback),
+    onMinusCounter: (callback) => ipcRenderer.on('minus-counter', callback)
 });

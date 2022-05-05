@@ -30,21 +30,23 @@ const createWindow = () => {
         }
     });
 
-    // const menu = Menu.buildFromTemplate({
-    //     label: app.name,
-    //     submenu: [
-    //         {
-    //             click: () => win.webContents.send('plus-counter'),
-    //             label: 'Increment +'
-    //         },
-    //         {
-    //             click: () => win.webContents.send('minus-counter'),
-    //             label: 'Decrement -'
-    //         }
-    //     ]
-    // });
+    const menu = Menu.buildFromTemplate([
+        {
+            label: app.name,
+            submenu: [
+                {
+                    click: () => win.webContents.send('plus-counter'),
+                    label: 'Increment +'
+                },
+                {
+                    click: () => win.webContents.send('minus-counter'),
+                    label: 'Decrement -'
+                }
+            ]
+        }
+    ]);
 
-    // Menu.setApplicationMenu(menu);
+    Menu.setApplicationMenu(menu);
 
     win.loadFile('index.html');
 }
@@ -61,6 +63,9 @@ app.whenReady().then(() => {
     });
 
     ipcMain.on('set-title', handleSetTitle);
+    ipcMain.on('counter-value', (_event, value) => {
+        console.log('Counter Value:', value);
+    })
 })
 
 app.on('window-all-closed', () => {
